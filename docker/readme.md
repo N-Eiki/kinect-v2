@@ -10,5 +10,7 @@ catkin_make -DCMAKE_BUILD_TYPE=Release -Dfreenect2_DIR=~/freenect2/lib/cmake/fre
 source devel/setup.bash
 ```
 # 動作テスト
+```
 roslaunch kinect2_bridge kinect2_bridge.launch
 rosrun rviz rviz #color画像を表示する
+```
