@@ -1,0 +1,1 @@
+docker build -t kinectv2:noetic .
