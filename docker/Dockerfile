@@ -49,6 +49,8 @@ RUN pip install ipdb
 RUN apt-get install -y tmux byobu 
 
 # For Kinect-v2 Ros Package
+WORKDIR /root/catkin/src
+RUN git clone https://github.com/N-Eiki/kinect-v2.git
 # WORKDIR /root/catkin_ws/src
 # RUN git clone https://github.com/code-iai/iai_kinect2.git && cd /root/catkin_ws/src/iai_kinect2 && rosdep install -r --from-paths 
 # WORKDIR /root/catkin_ws/
@@ -59,5 +61,6 @@ RUN apt-get install -y tmux byobu
 # RUN mkdir -p /root/catkin_ws/src
 # RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
 # RUN echo "cd /root" >> ~/.bashrc
+RUN echo "export PYTHONPATH=$PYTHONPATH:/root/catkin_ws/src" >> ~/.bashrc
 
 WORKDIR /root/catkin_ws/src

@@ -7,6 +7,8 @@ rosdep install -r --from-paths .
 cd /root/catkin_ws/
 catkin_make -DCMAKE_BUILD_TYPE=Release -Dfreenect2_DIR=~/freenect2/lib/cmake/freenect2 -DCMAKE_CXX_STANDARD=14
 source devel/setup.bash
+echo "export PYTHONPATH=$PYTHONPATH:/root/catkin_ws/src" >> ~/.bashrc
+source ~/.bashrc
 
 # 動作テスト
 roslaunch kinect2_bridge kinect2_bridge.launch
