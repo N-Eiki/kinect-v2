@@ -20,19 +20,35 @@ from mpl_toolkits.mplot3d import axes3d, Axes3D
 
 from kinect.src.subscribe_color import SingleImageSubscriber
 from kinect.src.heightmap_utils import get_heightmap
+
 class ImageSub(SingleImageSubscriber):
     def rgb_callback(self, rgb):
         rgb = self.bridge.imgmsg_to_cv2(rgb, 'bgr8')
-        self.images = [rgb]
+        if self.all:
+            self.images.append(rgb)
+        else:
+            self.images = [rgb]
         
-
+    def set_save_flg(self, flg):
+        self.all = flg
+        
     def depth_callback(self, depth):
         depth = self.bridge.imgmsg_to_cv2(depth, '32FC1')
         depth /= 1000.
         # self.images.append(depth)
         self.images = [depth]
             
-            
+
+def get_workspace_area(rgb):
+    aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+    corners, ids, _ = cv2.aruco.detectMarkers(rgb, aruco_dict)
+    ret = rgb.copy()
+    corners[2], corners[3] = corners[3], corners[2]
+    points = np.array([corner[0][0] for corner in corners]).astype(int)
+    # points[2], points[3] = points[3], points[2]
+
+    cv2.fillConvexPoly(ret, points, color=(255, 0, 0))    
+    return ret
 
 
 
@@ -87,13 +103,16 @@ if __name__=="__main__":
     cam_pose = np.dot(cam_trans, cam_rotm)
     workspace_limits = np.asarray([[-1.5, 1.5], [-2, 1], [-1, 3]])
     heightmap_resolution = 0.5/224
-    
+    xy_area = np.load('/root/catkin_ws/src/kinect/pose/workspace_05_224.npy')
+    xmin, xmax, ymin, ymax = xy_area
     while len(color_sub.images)==0 or len(depth_sub.images)==0:
         time.sleep(0.01)
-    print(len(color_sub.images))
-    rgb_image = color_sub.images[0]
-    depth_image = depth_sub.images[0]
-    depth_image[depth_image>8] = 0
-    top_down_rgb, ret_depth = get_heightmap(rgb_image, depth_image, mtx, cam_pose, workspace_limits, heightmap_resolution)
-    plt.imshow(top_down_rgb)
-    plt.show()
+    
+    while True:
+    # if True:
+        rgb_image = color_sub.images[0]
+        depth_image = depth_sub.images[0]
+        depth_image[depth_image>8] = 0
+        top_down_rgb, ret_depth = get_heightmap(rgb_image, depth_image, mtx, cam_pose, workspace_limits, heightmap_resolution)       
+        plt.imshow(top_down_rgb[xmin:xmax, ymin:ymax])
+        plt.pause(1/30)

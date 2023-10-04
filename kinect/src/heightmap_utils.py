@@ -127,7 +127,7 @@ if __name__== '__main__':
     # workspace_limits = np.asarray([[-0.5, 0.5], [-0.5, 0.5], [-1,10]])
     workspace_limits = np.asarray([[-0.35, 0.35], [-0.05, .7], [-10,10]])
 
-    heightmap_resolution = 0.5/224
+    heightmap_resolution = 0.5/1024#224
     
     rgb_image = cv2.imread(os.path.join(os.path.dirname(os.path.dirname((os.path.dirname(__file__)))), 'hsr_images', 'images', 'rgb.png'))
     depth_image = np.load(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'hsr_images', 'images', 'depth.npy')) / 1000.

@@ -20,8 +20,8 @@ from sensor_msgs.msg import Image, CompressedImage, CameraInfo
 # from hsr_images.script.subscribe_images import SingleImageSubscriber
 
 class SingleImageSubscriber:
-    def __init__(self, topic_name,):
-        
+    def __init__(self, topic_name, all=False):
+        self.all = all #save all images?
         if "compressed" in topic_name:
             image_type = CompressedImage
         else:
@@ -39,6 +39,7 @@ class SingleImageSubscriber:
         self.images.append(rgb)
         print(rgb.shape)
         cv2.imshow('image', rgb)
+        cv2.imwrite('rgb.png', rgb)
         cv2.waitKey(1)
         
 
@@ -47,6 +48,7 @@ class SingleImageSubscriber:
         # self.images.append(depth)
         print(depth.shape)
         plt.imshow(depth)
+        np.save('depth.npy', depth)
         plt.pause(.01)
         
 def calibration(sub, topic_dir):
@@ -92,12 +94,12 @@ if __name__=="__main__":
     rospy.init_node('subimg')
     image_topic_list = [
         "/kinect2/hd/image_color",
-        "/kinect2/hd/image_color_rect"
+        "/kinect2/hd/image_color_rect",
         "/kinect2/hd/image_depth",
         "/kinect2/hd/image_depth_rect"
     ]
     
-    image_topic = image_topic_list[2]
+    image_topic = image_topic_list[1]
     # topic_dir = image_topic.split("/")[1]
     sub = SingleImageSubscriber(image_topic)
     # calibration(sub, topic_dir)

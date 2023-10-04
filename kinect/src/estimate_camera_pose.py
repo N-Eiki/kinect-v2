@@ -2,10 +2,12 @@
 
 import math
 import numpy as np
+from pyquaternion import Quaternion
 
 import os
 import sys
 import time
+
 import  matplotlib.pyplot as plt
 
 import cv2
@@ -18,8 +20,9 @@ from std_srvs.srv import Trigger, TriggerResponse
 from sensor_msgs.msg import Image, CompressedImage, CameraInfo
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 
-from kinect.src.subscribe_color import SingleImageSubscriber
+# from kinect.src.subscribe_color import SingleImageSubscriber
 
+from subscribe_color import SingleImageSubscriber
 
 class EstimatePose(SingleImageSubscriber):
     def rgb_callback(self, rgb):
