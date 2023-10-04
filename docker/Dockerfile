@@ -49,18 +49,21 @@ RUN pip install ipdb
 RUN apt-get install -y tmux byobu 
 
 # For Kinect-v2 Ros Package
-WORKDIR /root/catkin/src
-RUN git clone https://github.com/N-Eiki/kinect-v2.git
-# WORKDIR /root/catkin_ws/src
-# RUN git clone https://github.com/code-iai/iai_kinect2.git && cd /root/catkin_ws/src/iai_kinect2 && rosdep install -r --from-paths 
-# WORKDIR /root/catkin_ws/
-# RUN catkin_make -DCMAKE_BUILD_TYPE=”Release” -Dfreenect2_DIR=~/freenect2/lib/cmake/freenect2
+RUN git clone https://github.com/paul-shuvo/iai_kinect2_opencv4.git  /root/catkin_ws/src/iai_kinect2
+RUN rosdep install -r --from-paths /root/catkin_ws/src/iai_kinect2 
 
+# WORKDIR /root/catkin_ws/
+RUN  echo "cd  /root/catkin_ws;catkin_make -DCMAKE_BUILD_TYPE=Release -Dfreenect2_DIR=~/freenect2/lib/cmake/freenect2 -DCMAKE_CXX_STANDARD=14" >> ~/.bashrc
+
+#hsr mode
+# alias hsrb_mode='export ROS_MASTER_URI=http://192.168.11.5:11311 export PS1="\[\033[41;1;37m\]<hsrb>\[\033[0m\]\w$ "'
 
 # RUN /bin/bash -c "source /opt/ros/noetic/setup.bash"
 # RUN mkdir -p /root/catkin_ws/src
 # RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
 # RUN echo "cd /root" >> ~/.bashrc
 RUN echo "export PYTHONPATH=$PYTHONPATH:/root/catkin_ws/src" >> ~/.bashrc
-
+RUN echo "export ROS_MASTER_URI=http://192.168.11.5:11311" >> ~/.bashrc
+RUN echo "export ROS_IP=192.168.11.6" >> ~/.bashrc
 WORKDIR /root/catkin_ws/src
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc

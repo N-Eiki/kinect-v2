@@ -11,7 +11,12 @@ source devel/setup.bash
 
 echo "export PYTHONPATH=$PYTHONPATH:/root/catkin_ws/src" >> ~/.bashrc
 source ~/.bashrc
-
+```
+# camera pose
+```
+cd /path/to/kinect-v2/kinect/src/
+python estimate_camera_pose.py
+```
 
 ```
 roslaunch kinect2_bridge kinect2_bridge.launch

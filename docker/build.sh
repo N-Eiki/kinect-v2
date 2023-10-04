@@ -1,1 +1,1 @@
-docker build -t kinectv2:noetic .
+docker build -t kinectv2:hsr_noetic .
